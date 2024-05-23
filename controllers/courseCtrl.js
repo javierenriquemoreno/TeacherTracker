@@ -202,10 +202,10 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now().setZone('-04:00').setLocale('es-VE');
+			const date = DateTime.now().setZone('UTC-04:00').setLocale('es-VE');
 			const todayWeekday = date.toLocaleString({ weekday: 'long' });
-			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('-04:00').setLocale('es-VE');
-			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('-04:00').setLocale('es-VE');
+			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('UTC-04:00').setLocale('es-VE');
+			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('UTC-04:00').setLocale('es-VE');
 
 			// console.log(`Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
 			// console.log(`Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
