@@ -202,10 +202,10 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now().setLocale('es-VE');
+			const date = DateTime.now().setZone('America/Caracas');
 			const todayWeekday = date.toLocaleString({ weekday: 'long' });
-			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm', { locale: 'es-VE' });
-			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm', { locale: 'es-VE' });
+			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('America/Caracas');
+			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('America/Caracas');
 
 			// console.log(`Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
 			// console.log(`Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
@@ -213,15 +213,15 @@ const courseCtrl = {
 			// console.log(Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' }));
 			// console.log(Interval.fromDateTimes(startTime, endTime).contains(date));
 
-			const debugString = `
-			Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Intervalo resultante: ${Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			¿La fecha actual (${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}) esta dentro del intervalo?: ${Interval.fromDateTimes(startTime, endTime).contains(date)}
-			`;
+			// const debugString = `
+			// Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			// Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			// Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			// Intervalo resultante: ${Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			// ¿La fecha actual (${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}) esta dentro del intervalo?: ${Interval.fromDateTimes(startTime, endTime).contains(date)}
+			// `;
 
-			console.log(debugString);
+			// console.log(debugString);
 
 			if (!course) return res.json({
 				status: 400,
@@ -246,11 +246,7 @@ const courseCtrl = {
 			if (!Interval.fromDateTimes(startTime, endTime).contains(date)) return res.json({
 				status: 400,
 				success: false,
-				content: `No puedes actualizar el estado fuera de las horas académicas.
-
-				
-				${debugString}
-				`
+				content: 'No puedes actualizar el estado fuera de las horas académicas.'
 			});
 
 			if (date.day === DateTime.fromISO(course.statuses[0]?.date).day && course.statuses[0]?.type === type) return res.json({
