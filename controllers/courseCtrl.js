@@ -4,42 +4,6 @@ const randomString = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 const Course = require("../models/courseModel");
 const User = require('../models/userModel');
 
-/**
- * @param { Date } Date 
- * @param {{
- * 		weekday?: boolean,
- * 		hour?: boolean,
- * 		minute?: boolean
- * }} [options] 
- * @returns { Intl.DateTimeFormatPart[] }
- */
-const format = (Date, options) => {
-	return new Intl.DateTimeFormat("es-VE", {
-		...(options?.weekday ? { weekday: "long" } : {}),
-		...(options?.hour ? { hour: "2-digit" } : {}),
-		...(options?.minute ? { minute: "2-digit" } : {}),
-		timeZone: "America/Caracas",
-		hour12: true
-	})
-    .formatToParts(Date)
-    .filter(part => part.type !== 'literal')
-    .map(part => {
-        const { type, value } = part;
-        
-        if (type === 'weekday') return {
-            [type]: `${value[0].toUpperCase()}${value.slice(1)}`
-        };
-
-        if (type === 'dayPeriod') return {
-            [type]: value.replaceAll(" ", "").replaceAll(".", "").toUpperCase()
-        };
-        
-        return {
-            [type]: value
-        };
-    });
-};
-
 const courseCtrl = {
 	getCourses: async (req, res) => {
 		try {
@@ -106,40 +70,40 @@ const courseCtrl = {
 			const startTime = DateTime.fromFormat(time.startTime.trim(), "hh:mm");
 			const endTime = DateTime.fromFormat(time.endTime.trim(), "hh:mm");
 
-			const { validStart, validEnd } = {
-				validStart: {
-					min: DateTime.fromFormat('07:00', "hh:mm"),
-					max: DateTime.fromFormat('15:30', "hh:mm")
-				},
-				validEnd: {
-					min: DateTime.fromFormat('07:30', "hh:mm"),
-					max: DateTime.fromFormat('16:30', "hh:mm")
-				}
-			};
+			// const { validStart, validEnd } = {
+			// 	validStart: {
+			// 		min: DateTime.fromFormat('07:00', "hh:mm"),
+			// 		max: DateTime.fromFormat('15:30', "hh:mm")
+			// 	},
+			// 	validEnd: {
+			// 		min: DateTime.fromFormat('07:30', "hh:mm"),
+			// 		max: DateTime.fromFormat('16:30', "hh:mm")
+			// 	}
+			// };
 
-			if (startTime < validStart.min) return res.json({
-				status: 400,
-				success: false,
-				content: 'La hora de comienzo debe ser 7:00 AM o después.'
-			});
+			// if (startTime < validStart.min) return res.json({
+			// 	status: 400,
+			// 	success: false,
+			// 	content: 'La hora de comienzo debe ser 7:00 AM o después.'
+			// });
 
-			if (startTime > validStart.max) return res.json({
-				status: 400,
-				success: false,
-				content: 'La hora de comienzo debe ser 3:30 PM o antes.'
-			});
+			// if (startTime > validStart.max) return res.json({
+			// 	status: 400,
+			// 	success: false,
+			// 	content: 'La hora de comienzo debe ser 3:30 PM o antes.'
+			// });
 
-			if (endTime < validEnd.min) return res.json({
-				status: 400,
-				success: false,
-				content: 'La hora de finalización debe ser 7:30 AM o después.'
-			});
+			// if (endTime < validEnd.min) return res.json({
+			// 	status: 400,
+			// 	success: false,
+			// 	content: 'La hora de finalización debe ser 7:30 AM o después.'
+			// });
 
-			if (endTime > validEnd.max) return res.json({
-				status: 400,
-				success: false,
-				content: 'La hora de finalización debe ser 4:30 PM o antes.'
-			});
+			// if (endTime > validEnd.max) return res.json({
+			// 	status: 400,
+			// 	success: false,
+			// 	content: 'La hora de finalización debe ser 4:30 PM o antes.'
+			// });
 
 			if (!days?.length) return res.json({
 				status: 400,
@@ -238,10 +202,10 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now();
-			const todayWeekday = date.setLocale('es-VE').toLocaleString({ weekday: 'long' });
-			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm');
-			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm');
+			const date = DateTime.now().setLocale('es-VE');
+			const todayWeekday = date.toLocaleString({ weekday: 'long' });
+			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm', { locale: 'es-VE' });
+			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm', { locale: 'es-VE' });
 
 			if (!course) return res.json({
 				status: 400,
@@ -274,15 +238,13 @@ const courseCtrl = {
 				success: false,
 				content: 'El estado ya esta actualizado'
 			});
-			
-			const foundCourse = await Course.findOne({ _id: id });
 
-			foundCourse.statuses.unshift({
+			course.statuses.unshift({
 				type,
 				date: date.toString()
 			})
 
-			await foundCourse.save();
+			await course.save();
 
 			return res.json({
 				status: 200,

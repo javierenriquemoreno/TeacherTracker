@@ -145,8 +145,8 @@ export const NewClassForm = () => {
 								type="time"
 								name="startTime"
 								id='startTime'
-								min="07:00"
-								max="15:30"
+								// min="07:00"
+								// max="15:30"
 								value={ postData.time.startTime }
 								onChange={ onChangeTime }
 								required
@@ -156,8 +156,8 @@ export const NewClassForm = () => {
 								type="time"
 								name="endTime"
 								id='endTime'
-								min="07:30"
-								max="16:30"
+								// min="07:30"
+								// max="16:30"
 								value={ postData.time.endTime }
 								onChange={ onChangeTime }
 								required
