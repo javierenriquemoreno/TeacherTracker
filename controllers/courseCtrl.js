@@ -213,15 +213,15 @@ const courseCtrl = {
 			// console.log(Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' }));
 			// console.log(Interval.fromDateTimes(startTime, endTime).contains(date));
 
-			// const debugString = `
-			// Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			// Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			// Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			// Intervalo resultante: ${Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			// ¿La fecha actual (${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}) esta dentro del intervalo?: ${Interval.fromDateTimes(startTime, endTime).contains(date)}
-			// `;
+			const debugString = `
+			Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			Intervalo resultante: ${Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
+			¿La fecha actual (${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}) esta dentro del intervalo?: ${Interval.fromDateTimes(startTime, endTime).contains(date)}
+			`;
 
-			// console.log(debugString);
+			console.log(debugString);
 
 			if (!course) return res.json({
 				status: 400,
