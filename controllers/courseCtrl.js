@@ -202,16 +202,10 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now().setZone('UTC-04:00').setLocale('es-VE');
+			const date = DateTime.now().setZone('America/New_York');
 			const todayWeekday = date.toLocaleString({ weekday: 'long' });
-			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('UTC-04:00').setLocale('es-VE');
-			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('UTC-04:00').setLocale('es-VE');
-
-			// console.log(`Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
-			// console.log(`Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
-			// console.log(`Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}`);
-			// console.log(Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' }));
-			// console.log(Interval.fromDateTimes(startTime, endTime).contains(date));
+			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('America/New_York');
+			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('America/New_York');
 
 			const debugString = `
 			Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
