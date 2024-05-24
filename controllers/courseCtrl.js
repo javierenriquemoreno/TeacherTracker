@@ -203,19 +203,9 @@ const courseCtrl = {
 			const course = await Course.findById(id);
 
 			const date = DateTime.now().setZone('UTC-04:00');
-			const todayWeekday = date.toLocaleString({ weekday: 'long' });
+			const todayWeekday = date.toLocaleString({ weekday: 'long', locale: 'es-VE' });
 			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
 			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
-
-			const debugString = `
-			Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Fecha de inicio de la clase (locale: ${startTime.locale}): ${startTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Fecha de finalización de la clase (locale: ${endTime.locale}): ${endTime.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			Intervalo resultante: ${Interval.fromDateTimes(startTime, endTime).toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
-			¿La fecha actual (${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })}) esta dentro del intervalo?: ${Interval.fromDateTimes(startTime, endTime).contains(date)}
-			`;
-
-			console.log(debugString);
 
 			if (!course) return res.json({
 				status: 400,
