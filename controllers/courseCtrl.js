@@ -202,7 +202,7 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now();
+			const date = DateTime.now().setZone('UTC-04:00');
 			const todayWeekday = date.toLocaleString({ weekday: 'long' });
 			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
 			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
