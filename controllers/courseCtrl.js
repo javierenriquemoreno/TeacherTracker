@@ -67,43 +67,43 @@ const courseCtrl = {
 				content: "El horario de la clase es obligatorio."
 			});
 
-			const startTime = DateTime.fromFormat(time.startTime.trim(), "hh:mm");
-			const endTime = DateTime.fromFormat(time.endTime.trim(), "hh:mm");
+			const startTime = DateTime.fromFormat(time.startTime.trim(), "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas');
+			const endTime = DateTime.fromFormat(time.endTime.trim(), "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas');
 
-			// const { validStart, validEnd } = {
-			// 	validStart: {
-			// 		min: DateTime.fromFormat('07:00', "hh:mm"),
-			// 		max: DateTime.fromFormat('15:30', "hh:mm")
-			// 	},
-			// 	validEnd: {
-			// 		min: DateTime.fromFormat('07:30', "hh:mm"),
-			// 		max: DateTime.fromFormat('16:30', "hh:mm")
-			// 	}
-			// };
+			const { validStart, validEnd } = {
+				validStart: {
+					min: DateTime.fromFormat('07:00', "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas'),
+					max: DateTime.fromFormat('15:30', "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas')
+				},
+				validEnd: {
+					min: DateTime.fromFormat('07:30', "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas'),
+					max: DateTime.fromFormat('16:30', "hh:mm", { zone: 'UTC-04:00' }).setZone('America/Caracas')
+				}
+			};
 
-			// if (startTime < validStart.min) return res.json({
-			// 	status: 400,
-			// 	success: false,
-			// 	content: 'La hora de comienzo debe ser 7:00 AM o después.'
-			// });
+			if (startTime < validStart.min) return res.json({
+				status: 400,
+				success: false,
+				content: 'La hora de comienzo debe ser 7:00 AM o después.'
+			});
 
-			// if (startTime > validStart.max) return res.json({
-			// 	status: 400,
-			// 	success: false,
-			// 	content: 'La hora de comienzo debe ser 3:30 PM o antes.'
-			// });
+			if (startTime > validStart.max) return res.json({
+				status: 400,
+				success: false,
+				content: 'La hora de comienzo debe ser 3:30 PM o antes.'
+			});
 
-			// if (endTime < validEnd.min) return res.json({
-			// 	status: 400,
-			// 	success: false,
-			// 	content: 'La hora de finalización debe ser 7:30 AM o después.'
-			// });
+			if (endTime < validEnd.min) return res.json({
+				status: 400,
+				success: false,
+				content: 'La hora de finalización debe ser 7:30 AM o después.'
+			});
 
-			// if (endTime > validEnd.max) return res.json({
-			// 	status: 400,
-			// 	success: false,
-			// 	content: 'La hora de finalización debe ser 4:30 PM o antes.'
-			// });
+			if (endTime > validEnd.max) return res.json({
+				status: 400,
+				success: false,
+				content: 'La hora de finalización debe ser 4:30 PM o antes.'
+			});
 
 			if (!days?.length) return res.json({
 				status: 400,
