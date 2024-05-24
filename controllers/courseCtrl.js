@@ -202,10 +202,10 @@ const courseCtrl = {
 
 			const course = await Course.findById(id);
 
-			const date = DateTime.now().setZone('America/New_York');
+			const date = DateTime.now();
 			const todayWeekday = date.toLocaleString({ weekday: 'long' });
-			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm').setZone('America/New_York');
-			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm').setZone('America/New_York');
+			const startTime = DateTime.fromFormat(course.time.startTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
+			const endTime = DateTime.fromFormat(course.time.endTime, 'hh:mm', { zone: 'UTC-04:00' }).setZone('America/Caracas');
 
 			const debugString = `
 			Fecha actual (locale: ${date.locale}): ${date.toLocaleString({ dateStyle: 'long', timeStyle: 'long' })},
